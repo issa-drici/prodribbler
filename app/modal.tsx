@@ -1,35 +1,52 @@
 import { StatusBar } from 'expo-status-bar';
-import { Platform, StyleSheet } from 'react-native';
+import { Platform, ScrollView, StyleSheet } from 'react-native';
 
 import EditScreenInfo from '@/components/EditScreenInfo';
-import { Text, View } from '@/components/Themed';
+import { Text, View, ViewScreen } from '@/components/Themed';
 
 export default function ModalScreen() {
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Modal</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <EditScreenInfo path="app/modal.tsx" />
-
-      {/* Use a light status bar on iOS to account for the black space above the modal */}
-      <StatusBar style={Platform.OS === 'ios' ? 'light' : 'auto'} />
-    </View>
+    <ViewScreen withoutPadding>
+      <View style={{
+        flex: 1,
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}>
+        <View style={styles.header}>
+          <Text style={styles.title}>
+            Notifications
+          </Text>
+        </View>
+        <ScrollView style={styles.notificationContainer}>
+          <Text style={styles.noNotification}>
+            Aucune notification
+          </Text>
+        </ScrollView>
+      </View>
+    </ViewScreen>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
+  header: {
     justifyContent: 'center',
+    alignItems: 'center',
   },
   title: {
+    color: '#fff',
     fontSize: 20,
-    fontWeight: 'bold',
+    fontFamily: 'Montserrat-Medium'
   },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: '80%',
+  notificationContainer: {
+    flex: 1,
+    margin: 0,
+    padding: 0,
+    paddingTop: 300,
   },
+  noNotification: {
+    color: '#fff',
+    fontSize: 16,
+    fontFamily: 'Montserrat-Regular'
+  }
 });

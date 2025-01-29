@@ -1,59 +1,103 @@
 import React from 'react';
-import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { Link, Tabs } from 'expo-router';
-import { Pressable } from 'react-native';
-
-import Colors from '@/constants/Colors';
-import { useColorScheme } from '@/components/useColorScheme';
+import {  Tabs } from 'expo-router';
 import { useClientOnlyValue } from '@/components/useClientOnlyValue';
 
-// You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
-function TabBarIcon(props: {
-  name: React.ComponentProps<typeof FontAwesome>['name'];
-  color: string;
-}) {
-  return <FontAwesome size={28} style={{ marginBottom: -3 }} {...props} />;
-}
+import homeActive from '@/assets/icons/home-active.png';
+import homeInactive from '@/assets/icons/home-inactive.png';
+
+import exercisesActive from '@/assets/icons/exercises-active.png';
+import exercisesInactive from '@/assets/icons/exercises-inactive.png';
+
+import trainingStatsActive from '@/assets/icons/training-stats-active.png';
+import trainingStatsInactive from '@/assets/icons/training-stats-inactive.png';
+
+import profileActive from '@/assets/icons/profile-active.png';
+import profileInactive from '@/assets/icons/profile-inactive.png';
+
+
+import { Header } from '@/components/Header';
+import { TabBarButton } from '@/components/TabBarButton';
+import { Platform } from 'react-native';
+
+
+const TAB_BAR_STYLE = {
+  backgroundColor: '#000',
+  borderTopWidth: 0,
+  borderTopLeftRadius: 15.35,
+  borderTopRightRadius: 15.35,
+  position: "absolute",
+  bottom: 0,
+  left: 0,
+  right: 0,
+  height: Platform.OS === 'android' ? 75 : 100,
+  paddingTop: 8,
+} as const;
+
+const TABS_CONFIG = [
+  {
+    name: 'index',
+    title: 'Welcome to ProDribbler',
+    label: 'Home',
+    activeIcon: homeActive,
+    inactiveIcon: homeInactive,
+  },
+  {
+    name: 'exercises',
+    title: 'ProDribbler Levels',
+    label: 'Exercises',
+    activeIcon: exercisesActive,
+    inactiveIcon: exercisesInactive,
+    withoutRounding: true,
+
+  },
+
+  {
+    name: '(stats-ranking)',
+    // title: 'Training & Stats',
+    label: 'Training/Stats',
+    activeIcon: trainingStatsActive,
+    inactiveIcon: trainingStatsInactive,
+    withoutRounding: true,
+  },
+
+  {
+    name: 'profile',
+    title: 'Your Profile',
+    label: 'Profile',
+    activeIcon: profileActive,
+    inactiveIcon: profileInactive,
+  },
+
+] as const;
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
-
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-        // Disable the static render of the header on web
-        // to prevent a hydration error in React Navigation v6.
         headerShown: useClientOnlyValue(false, true),
       }}>
-      <Tabs.Screen
-        name="index"
-        options={{
-          title: 'Tab One',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
-          headerRight: () => (
-            <Link href="/modal" asChild>
-              <Pressable>
-                {({ pressed }) => (
-                  <FontAwesome
-                    name="info-circle"
-                    size={25}
-                    color={Colors[colorScheme ?? 'light'].text}
-                    style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
-                  />
-                )}
-              </Pressable>
-            </Link>
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="two"
-        options={{
-          title: 'Tab Two',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
-        }}
-      />
+      {TABS_CONFIG.map((tab) => (
+        <Tabs.Screen
+          key={tab.name}
+          name={tab.name}
+          options={{
+            title: tab.title,
+            headerTransparent: true,
+            header: () => <Header title={tab.title} withoutRounding={tab.withoutRounding ?? false} />,
+            tabBarStyle: TAB_BAR_STYLE,
+            tabBarButton: (props) => (
+              <TabBarButton
+                {...props}
+                activeIcon={tab.activeIcon}
+                inactiveIcon={tab.inactiveIcon}
+                label={tab.label}
+                isSelected={props.accessibilityState?.selected}
+              />
+            ),
+            tabBarLabel: () => null,
+          }}
+        />
+      ))}
     </Tabs>
   );
 }
