@@ -18,7 +18,20 @@ export default function RankingsLayout() {
                     title: 'Exercise',
                     headerTransparent: true,
                     header: () => <Header title="Exercise" withoutRounding />,
-                
+                  }}
+            />
+             <Stack.Screen
+                name="faq"
+                options={{
+                    headerTransparent: true,
+                    header: () => <Header title="FAQ" />,
+                  }}
+            />
+            <Stack.Screen
+                name="settings"
+                options={{
+                    headerTransparent: true,
+                    header: () => <Header title="Account Setting" />,
                   }}
             />
         </Stack>

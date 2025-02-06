@@ -8,13 +8,14 @@ type WeeklyXPChartProps = {
     xp: number;
   }[];
   maxValue?: number;
+  selectedRange?: string;
 };
 
-export default function WeeklyXPChart({ data, maxValue = 1500 }: WeeklyXPChartProps) {
+export default function WeeklyXPChart({ data, maxValue = 1500, selectedRange }: WeeklyXPChartProps) {
   const [selectedDay, setSelectedDay] = useState<string | null>(null);
 
   const getBarHeight = (value: number) => {
-    if (value === 0) return 10; // Hauteur minimale pour les barres à 0 XP
+    if (value === 0) return 5; // Hauteur minimale pour les barres à 0 XP
     return Math.max(10, (value / maxValue) * 250); // 250px est la hauteur maximale de la barre
   };
 
@@ -24,7 +25,7 @@ export default function WeeklyXPChart({ data, maxValue = 1500 }: WeeklyXPChartPr
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Overall XP Earned In a week</Text>
+      <Text style={styles.title}>Overall XP Earned In a {selectedRange}</Text>
       
       <View style={styles.chart}>
         {/* Lignes horizontales */}
@@ -54,6 +55,7 @@ export default function WeeklyXPChart({ data, maxValue = 1500 }: WeeklyXPChartPr
               key={item.day}
               style={[
                 styles.barWrapper,
+                { width: data.length === 1 ? '100%' : '12%' },
                 selectedDay === item.day && styles.selectedBarWrapper
               ]}
               onPress={() => handleBarPress(item.day)}
@@ -156,7 +158,7 @@ const styles = StyleSheet.create({
   bar: {
     width: '100%',
     borderRadius: 8,
-    minHeight: 15, // Assure une hauteur minimale
+    minHeight: 5, // Assure une hauteur minimale
   },
   dayLabel: {
     color: '#FFFFFF',

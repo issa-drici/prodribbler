@@ -1,23 +1,29 @@
 import { Image, StyleSheet, View } from 'react-native';
 import { Text } from '../Themed';
 
-export function PlayerSection() {
+export function PlayerSection({ user, totalTime, drills }: { user: any, totalTime: string, drills: string }) {
     return (
         <View style={styles.playerContainer}>
             <Image
                 source={require('@/assets/images/player-card.png')}
                 style={styles.playerImage}
             />
+            <View style={styles.imageContainer}>
+                <Image
+                    source={require('@/assets/images/profile-default.png')}
+                    style={styles.profileImage}
+                />
+            </View>
             <View style={styles.playerInfo}>
-                <Text style={styles.playerName}>Issa Drici</Text>
+                {user && <Text style={styles.playerName}>{user.full_name}</Text>}
             </View>
             <View style={styles.trainingTime}>
                 <Text style={styles.statLabel}>Training Time</Text>
-                <Text style={styles.statValue}>60</Text>
+                <Text style={styles.statValue}>{totalTime}</Text>
             </View>
             <View style={styles.drills}>
                 <Text style={styles.statLabel}>Drills</Text>
-                <Text style={styles.statValue}>24</Text>
+                <Text style={styles.statValue}>{drills}</Text>
             </View>
             <View style={styles.streak}>
                 <Text style={styles.statLabel}>Streak</Text>
@@ -36,10 +42,27 @@ const styles = StyleSheet.create({
         width: 250,
         height: 388,
     },
+   
     playerImage: {
         width: 250,
         height: 388,
         resizeMode: 'stretch'
+    },
+    imageContainer: {
+        position: 'absolute',
+        alignItems: 'center',
+        justifyContent: 'center',
+        top: 10,
+        left: 0,
+        right: 0,
+        zIndex: -1,
+    },
+    profileImage: {
+        width: 166,
+        height: 170,
+        resizeMode: 'cover',
+        borderTopLeftRadius: 30,
+        borderTopRightRadius: 30,
     },
     playerInfo: {
         position: 'absolute',

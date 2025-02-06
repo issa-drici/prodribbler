@@ -3,64 +3,112 @@ import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native
 import { useFonts } from 'expo-font';
 import { Stack, useRouter, useSegments } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import 'react-native-reanimated';
 import { StatusBar } from 'expo-status-bar';
 import { HeaderProvider } from '@/contexts/HeaderContext';
-import { AuthProvider, useAuth } from '@/contexts/AuthContext';
+// import { AuthProvider, useAuth } from '@/contexts/AuthContext';
 import { Text, View } from '@/components/Themed';
-import { Image } from 'react-native';
+import { ActivityIndicator, Image } from 'react-native';
+import { AuthContext, AuthProvider } from '@/context/AuthProvider';
+import * as SecureStore from "expo-secure-store";
 
 export {
   // Catch any errors thrown by the Layout component.
   ErrorBoundary,
 } from 'expo-router';
 
-export const unstable_settings = {
-  // Ensure that reloading on `/modal` keeps a back button present.
-  initialRouteName: '(tabs)',
-};
+// export const unstable_settings = {
+//   // Ensure that reloading on `/modal` keeps a back button present.
+//   initialRouteName: '(tabs)',
+// };
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
-SplashScreen.preventAutoHideAsync();
+// SplashScreen.preventAutoHideAsync();
+
+function AuthStackNavigator() {
+  return (
+    <Stack
+      screenOptions={{
+        headerShown: false,
+        gestureEnabled: false,
+        animation: 'none',
+        gestureDirection: 'horizontal',
+      }}
+    >
+      <Stack.Screen
+        name="(auth)"
+        options={{
+          headerShown: false,
+          gestureEnabled: false,
+          animation: 'none',
+          navigationBarHidden: true,
+        }}
+      />
+    </Stack>
+  );
+}
+
+function HomeStackNavigator() {
+  return (
+    <Stack screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+      <Stack.Screen name="(stack)" options={{ headerShown: false }} />
+      <Stack.Screen name="modal" options={{ presentation: 'modal', headerShown: false }} />
+    </Stack>
+  );
+}
 
 function RootLayoutNav() {
-  const { isAuthenticated, isInitialized } = useAuth();
+  const [isLoading, setIsLoading] = useState(true);
+  const { user, setUser } = useContext(AuthContext);
   const segments = useSegments();
   const router = useRouter();
 
   useEffect(() => {
-    if (!isInitialized) return;
-
     const inAuthGroup = segments[0] === '(auth)';
+    const isSignupScreen = segments[1] === 'signup';
 
-    if (!isAuthenticated && !inAuthGroup) {
-      // Rediriger vers login si non authentifié et pas dans le groupe auth
-      router.replace('/login');
-    } else if (isAuthenticated && inAuthGroup) {
-      // Rediriger vers tabs si authentifié et dans le groupe auth
-      router.replace('/(tabs)');
+    if (!isLoading) {
+      if (!user && !isSignupScreen) {
+        router.replace('/(auth)/login');
+      } else if (user && inAuthGroup) {
+        router.replace('/(tabs)');
+      }
     }
-  }, [isAuthenticated, segments, isInitialized]);
+  }, [user, segments, isLoading]);
 
+  useEffect(() => {
+    SecureStore.getItemAsync("user").then((user) => {
+      if (user) {
+        setUser(JSON.parse(user));
+      }
+      setIsLoading(false);
+    }).catch((error) => {
+      console.error(error);
+      setIsLoading(false);
+    });
+  }, []);
+
+  if (isLoading) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator size="large" color="#0000ff" />
+      </View>
+    );
+  }
 
   return (
     <HeaderProvider>
       <ThemeProvider value={DefaultTheme}>
         <StatusBar style="light" />
-        <Stack>
-          <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen name="(stack)" options={{ headerShown: false }} />
-          <Stack.Screen name="modal" options={{ presentation: 'modal', headerShown: false }} />
-        </Stack>
+        {user ? <HomeStackNavigator /> : <AuthStackNavigator />}
       </ThemeProvider>
     </HeaderProvider>
   );
 }
 
 export default function RootLayout() {
-  const [appIsReady, setAppIsReady] = useState(false);
   const [loaded, error] = useFonts({
     'Montserrat-Black': require('../assets/fonts/Montserrat-Black.ttf'),
     'Montserrat-BlackItalic': require('../assets/fonts/Montserrat-BlackItalic.ttf'),
@@ -82,39 +130,6 @@ export default function RootLayout() {
     'Montserrat-ThinItalic': require('../assets/fonts/Montserrat-ThinItalic.ttf'),
     ...FontAwesome.font,
   });
-
-  useEffect(() => {
-    async function prepare() {
-      try {
-        // Attendre que les polices soient chargées
-        await new Promise(resolve => setTimeout(resolve, 1000));
-      } catch (e) {
-        console.warn(e);
-      } finally {
-        setAppIsReady(true);
-      }
-    }
-
-    prepare();
-  }, []);
-
-  useEffect(() => {
-    if (error) throw error;
-  }, [error]);
-
-  useEffect(() => {
-    if (loaded && appIsReady) {
-      SplashScreen.hideAsync();
-    }
-  }, [loaded, appIsReady]);
-
-  if (!loaded || !appIsReady) {
-    return (
-      <AuthProvider>
-        <RootLayoutNav />
-      </AuthProvider>
-    );
-  }
 
   return (
     <AuthProvider>

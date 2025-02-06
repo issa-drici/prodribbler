@@ -4,11 +4,12 @@ import { StyleSheet } from 'react-native';
 import clock from '@/assets/icons/clock.png';
 import lineGraph from '@/assets/icons/line-graph.png';
 
-export function StatsSection() {
+export function StatsSection({ totalTime, totalXp }: { totalTime: string, totalXp: string }) {
+
   return (
     <View style={styles.stats}>
-      <StatCard label="Total Time Spend on Exercise" value="1" icon={clock} />
-      <StatCard label="Total XP Earned" value="500" icon={lineGraph} />
+      <StatCard label="Total Time Spend on Exercise" value={totalTime} icon={clock} />
+      <StatCard label="Total XP Earned" value={totalXp} icon={lineGraph} />
     </View>
   );
 }

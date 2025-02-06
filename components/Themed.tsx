@@ -21,7 +21,7 @@ type ThemeProps = {
 };
 
 export type TextProps = ThemeProps & DefaultText['props'];
-export type ViewProps = ThemeProps & DefaultView['props'] & { headerComponent?: React.ReactNode, withoutPadding?: boolean };
+export type ViewProps = ThemeProps & DefaultView['props'] & { headerComponent?: React.ReactNode, withoutPadding?: boolean, flexGrow?: number };
 
 type Halo = {
   key: string;
@@ -73,7 +73,7 @@ const SCREEN_WIDTH = Dimensions.get('window').width;
 const SVG_HEIGHT = Dimensions.get('window').height * 5 + 120;
 
 export function ViewScreen(props: ViewProps) {
-  const { style, children, headerComponent, withoutPadding, ...otherProps } = props;
+  const { style, children, headerComponent, withoutPadding, flexGrow, ...otherProps } = props;
   const padding = 25;
 
   const calculatePaddingVertical = () => {
@@ -116,7 +116,7 @@ export function ViewScreen(props: ViewProps) {
           end={{ x: 1, y: 1 }}
           colors={['#112023', '#000405']}
           style={{
-            top: 110,
+            top: Platform.OS === 'android' ? 90 : 110,
             left: 0,
             right: 0,
             justifyContent: 'space-between',
@@ -138,6 +138,9 @@ export function ViewScreen(props: ViewProps) {
           styles.scrollContainer,
           style,
         ]}
+        contentContainerStyle={{
+          flexGrow
+        }}
         bounces={false}
       >
         <Svg
@@ -177,7 +180,8 @@ export function ViewScreen(props: ViewProps) {
         {/* Contenu avec padding */}
         <DefaultView style={{
           padding: padding,
-          paddingVertical: calculatePaddingVertical()
+          paddingVertical: calculatePaddingVertical(),
+          flexGrow
         }}>
           {children}
         </DefaultView>

@@ -13,6 +13,8 @@ interface CalendarProps {
     week: Date[];
     month: Date;
     year: number;
+    start_date: Date;
+    end_date: Date;
   }) => void;
 }
 
@@ -156,42 +158,63 @@ export default function TrainingCalendar({
     setSelectedDate(date);
     if (onDateSelect) {
       let selection;
+      let startDate, endDate;
+
       switch (selectedRange) {
         case 'day':
+          startDate = new Date(date);
+          endDate = new Date(date);
+          endDate.setHours(23, 59, 59, 999);
           selection = {
             day: date,
             week: [],
             month: new Date(date.getFullYear(), date.getMonth(), 1),
-            year: date.getFullYear()
+            year: date.getFullYear(),
+            start_date: startDate,
+            end_date: endDate
           };
           break;
 
         case 'week':
+          startDate = new Date(date);
+          endDate = new Date(date);
+          endDate.setDate(startDate.getDate() + 6);
+          endDate.setHours(23, 59, 59, 999);
+          
           const weekDays = Array.from({ length: 7 }, (_, i) => {
-            const day = new Date(date);
-            day.setDate(date.getDate() + i);
+            const day = new Date(startDate);
+            day.setDate(startDate.getDate() + i);
             return day;
           });
+          
           selection = {
             day: date,
             week: weekDays,
             month: new Date(date.getFullYear(), date.getMonth(), 1),
-            year: date.getFullYear()
+            year: date.getFullYear(),
+            start_date: startDate,
+            end_date: endDate
           };
           break;
 
         case 'month':
-          const monthStart = new Date(date.getFullYear(), date.getMonth(), 1);
-          const monthEnd = new Date(date.getFullYear(), date.getMonth() + 1, 0);
-          const monthDays = Array.from(
-            { length: monthEnd.getDate() },
-            (_, i) => new Date(date.getFullYear(), date.getMonth(), i + 1)
-          );
+          startDate = new Date(date);
+          endDate = new Date(date);
+          
+          if (date.getDate() === 1) {
+            endDate.setMonth(startDate.getMonth() + 1, 0);
+          } else {
+            endDate.setDate(startDate.getDate() + 29);
+          }
+          endDate.setHours(23, 59, 59, 999);
+          
           selection = {
             day: date,
             week: [],
-            month: monthStart,
-            year: date.getFullYear()
+            month: startDate,
+            year: date.getFullYear(),
+            start_date: startDate,
+            end_date: endDate
           };
           break;
       }

@@ -12,16 +12,16 @@ type GradientButtonProps = {
     textStyle?: object;
 };
 
-export default function GradientButton({ 
+const GradientButton = React.forwardRef<any, GradientButtonProps>(({ 
     onPress, 
     text, 
     icon, 
     colors = ['#6FD3D1', '#0FB9ED'],
     style,
     textStyle
-}: GradientButtonProps) {
+}, ref) => {
     return (
-        <Pressable onPress={onPress} style={styles.pressable}>
+        <Pressable ref={ref} onPress={onPress} style={styles.pressable}>
             {({ pressed }) => (
                 <LinearGradient
                     start={{ x: 0, y: 0 }}
@@ -35,7 +35,12 @@ export default function GradientButton({
             )}
         </Pressable>
     );
-}
+});
+
+// Pour éviter les problèmes avec React DevTools
+GradientButton.displayName = 'GradientButton';
+
+export default GradientButton;
 
 const styles = StyleSheet.create({
     pressable: {

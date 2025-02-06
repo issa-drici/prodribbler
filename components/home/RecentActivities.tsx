@@ -3,19 +3,7 @@ import { GradientText } from "../GradientText";
 import { Text, View } from "../Themed";
 import { ActivityCard } from "./RecentActivities/ActivityCard";
 
-
-const MOCK_EXERCISE_DATA = {
-  category: 'Dribbling Drill',
-  name: 'Kids Soccer Agility Drills',
-  duration: '3h45m',
-  level: 'Intermediate',
-  completed: true,
-  link: 'https://videos.pexels.com/video-files/8938122/8938122-uhd_2560_1440_25fps.mp4',
-  description: 'Lorem ipsum dolor sit amet...',
-  instructions: ['Lorem ipsum dolor sit amet...']
-};
-
-export function RecentActivities() {
+export function RecentActivities({ activities }: { activities: any }) {
   return (
     <View style={styles.container}>
       <GradientText style={styles.headerTitle}>Recent Activities</GradientText>
@@ -23,26 +11,15 @@ export function RecentActivities() {
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod.
       </Text>
 
-      <ActivityCard
-        image={require('@/assets/images/kids-1.jpeg')}
-        title="Kids Soccer Agility Drill"
-        description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod."
-        exerciseData={MOCK_EXERCISE_DATA}
-      />
-
-      <ActivityCard
-        image={require('@/assets/images/kids-2.webp')}
-        title="Kids Soccer Agility Drill"
-        description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod."
-        exerciseData={MOCK_EXERCISE_DATA}
-      />
-
-      <ActivityCard
-        image={require('@/assets/images/kids-3.jpg')}
-        title="Kids Soccer Agility Drill"
-        description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod."
-        exerciseData={MOCK_EXERCISE_DATA}
-      />
+      {activities?.map((activity: any) => (
+        <ActivityCard
+          key={activity.id}
+          image={activity.banner_url}
+          title={activity.title}
+          description={`Découvrez cet exercice ${activity.title} dès maintenant !`}
+          exerciseData={activity}
+        />
+      ))}
 
       {/* <ViewAllButton /> */}
     </View>

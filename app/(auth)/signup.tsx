@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
-import { Image, ImageBackground, Platform, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
+import React, { useContext, useState } from 'react';
+import { ActivityIndicator, Image, ImageBackground, Platform, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
 import { Text, View, ViewScreen } from '@/components/Themed';
-import { useAuth } from '@/contexts/AuthContext';
+// import { useAuth } from '@/contexts/AuthContext';
 import { Link, router } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
+import axios from 'axios';
+import { AuthContext } from '@/context/AuthProvider';
 
 export default function SignupScreen() {
   const [step, setStep] = useState(1);
@@ -12,13 +14,10 @@ export default function SignupScreen() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [verificationCode, setVerificationCode] = useState('');
-  const [error, setError] = useState('');
-  const { signup } = useAuth();
+  const { register, error, isLoading } = useContext(AuthContext);
 
   const handleSignup = async () => {
     try {
-      setError('');
-
       if (step === 1) {
         // Validations de base
         if (!name || !email || !password || !confirmPassword) {
@@ -39,11 +38,11 @@ export default function SignupScreen() {
           throw new Error('Le code de vérification est requis');
         }
 
-        await signup(email, password, name, verificationCode);
+        await register(email, password, name, verificationCode);
         router.replace('/(tabs)');
       }
     } catch (error: any) {
-      setError(error.message);
+      console.log(error);
     }
   };
 
@@ -126,7 +125,8 @@ export default function SignupScreen() {
               end={{ x: 1, y: 0 }}
             >
               <Text style={styles.buttonText}>
-                {step === 1 ? 'Sign Up' : 'Verify'}
+                {isLoading ? <ActivityIndicator size="small" color="#fff" /> : step === 1 ? 'Sign Up' : 'Verify'}
+
               </Text>
             </LinearGradient>
           </TouchableOpacity>

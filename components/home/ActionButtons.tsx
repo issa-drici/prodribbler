@@ -21,22 +21,7 @@ export function ActionButtons() {
                 </Pressable>
             </Link>
 
-            <Link href={{
-                pathname: '/exercises',
-                params: {
-                    data: JSON.stringify({
-                        category: 'Dribbling Drill',
-                        name: 'Kids Soccer Agility Drills',
-                        duration: '3h45m',
-                        level: 'Intermediate',
-                        completed: true,
-                        link: 'https://videos.pexels.com/video-files/8938122/8938122-uhd_2560_1440_25fps.mp4',
-                        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod.',
-                        instructions: ['Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod.', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod.', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.Sed do eiusmod.', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.Sed do eiusmod.']
-
-                    }),
-                },
-            }} asChild style={styles.linkContainer}>
+            <Link href={{ pathname: '/exercises' }} asChild style={styles.linkContainer}>
                 <Pressable>
                     {({ pressed }) => (
                         <LinearGradient
@@ -85,7 +70,8 @@ const styles = StyleSheet.create({
         gap: 5
     },
     buttonText: {
+        color: '#000',
         fontFamily: 'Montserrat-SemiBold',
-        fontSize: 13
+        fontSize: 12
     }
 });

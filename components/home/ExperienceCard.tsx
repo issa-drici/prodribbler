@@ -3,14 +3,20 @@ import { GradientText } from '@/components/GradientText';
 import { Text, View } from '@/components/Themed';
 import { LinearGradient } from 'expo-linear-gradient';
 
-export function ExperienceCard() {
+export function ExperienceCard({ totalXp }: { totalXp: string }) {
   const experienceSteps = [
+    '0 XP',
     '500 XP',
     '1000 XP',
     '1500 XP',
-    '2000 XP',
-    '2500 XP'
+    '2000 XP'
   ];
+
+  // Calculer le pourcentage de progression
+  const maxXP = parseInt(experienceSteps[experienceSteps.length - 1]);
+  const currentXP = parseInt(totalXp);
+  const progressPercentage = Math.min(Math.max((currentXP / maxXP) * 100, 0), 100);
+  const progressDotPosition = 100 - progressPercentage;
 
   return (
     <View style={styles.cardContainer}>
@@ -20,11 +26,11 @@ export function ExperienceCard() {
         <GradientText style={styles.title} colors={['#fff', '#34819A']}>
           Do Not Give Up on Your Dreams!
         </GradientText>
-        
+
         <Text style={styles.subtitle}>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod.
         </Text>
-        
+
         <View style={styles.progressContainer}>
           <Text style={styles.progressTitle}>XP Level Progress Bar</Text>
           <View style={styles.progressBar}>
@@ -32,9 +38,9 @@ export function ExperienceCard() {
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 0 }}
               colors={['#97D8C5', '#25BEE6']}
-              style={styles.progressGradient}
+              style={[styles.progressGradient, { width: `${progressPercentage}%` }]}
             />
-            <View style={styles.progressDot} />
+            <View style={[styles.progressDot, { right: `${progressDotPosition}%` }]} />
           </View>
           <View style={styles.stepsContainer}>
             {experienceSteps.map((step, index) => (
@@ -128,4 +134,3 @@ const styles = StyleSheet.create({
     padding: 20,
   },
 });
-  

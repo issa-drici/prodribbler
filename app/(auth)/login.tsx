@@ -1,24 +1,24 @@
-import React, { useState } from 'react';
-import { StyleSheet, TextInput, TouchableOpacity, ImageBackground, Image, Platform } from 'react-native';
+import React, { useContext, useState } from 'react';
+import { StyleSheet, TextInput, TouchableOpacity, ImageBackground, Image, Platform, ActivityIndicator } from 'react-native';
 import { Text, View, ViewScreen } from '@/components/Themed';
-import { useAuth } from '@/contexts/AuthContext';
+// import { useAuth } from '@/contexts/AuthContext';
 import { Link, router } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
+import { AuthContext } from '@/context/AuthProvider';
 
 export default function LoginScreen() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
-  const { login } = useAuth();
+  const { login, error, isLoading } = useContext(AuthContext);
 
-  const handleLogin = async () => {
-    try {
-      await login(email, password);
-      router.replace('/(tabs)');
-    } catch (error: any) {
-      setError(error.message);
-    }
-  };
+  // const handleLogin = async () => {
+  //   try {
+  //     await login(email, password);
+  //     router.replace('/(tabs)');
+  //   } catch (error: any) {
+  //     setError(error.message);
+  //   }
+  // };
 
   return (
     <ImageBackground
@@ -54,6 +54,7 @@ export default function LoginScreen() {
                 onChangeText={setPassword}
                 placeholder='Password'
                 placeholderTextColor='#fff'
+                onSubmitEditing={() => login(email, password)}
                 secureTextEntry
               />
               <TouchableOpacity style={styles.eyeIcon}>
@@ -62,28 +63,28 @@ export default function LoginScreen() {
             </View>
 
             <View style={styles.rememberContainer}>
-              <View style={styles.checkboxRow}>
+              {/* <View style={styles.checkboxRow}>
                 <TouchableOpacity style={styles.checkbox}>
-                  {/* Case à cocher */}
+
                 </TouchableOpacity>
                 <Text style={styles.rememberText}>Remember me</Text>
-              </View>
+              </View> */}
               <TouchableOpacity>
                 <Text style={styles.forgotPassword}>Forgot Password?</Text>
               </TouchableOpacity>
             </View>
 
-            <TouchableOpacity onPress={handleLogin}>
+            <TouchableOpacity onPress={() => login(email, password)}>
               <LinearGradient
                 colors={['#6FD3D1', '#0FB9ED']}
                 style={styles.button}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 0 }}
               >
-                <Text style={styles.buttonText}>Login</Text>
+                {isLoading ? <ActivityIndicator size="small" color="#fff" /> : <Text style={styles.buttonText}>Login</Text>}
               </LinearGradient>
             </TouchableOpacity>
-
+            {/* {error && <Text style={styles.error}>{error}</Text>} */}
             <View style={styles.signupContainer}>
               <Text style={styles.signupText}>Don't have an account? </Text>
               <Link href="/(auth)/signup" asChild>
