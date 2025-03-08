@@ -13,7 +13,7 @@ import TrainingCalendar from '@/components/stats/TrainingCalendar';
 import TrainingStatsHeader from '@/components/stats/TrainingStatsHeader';
 import WeeklyXPChart from '@/components/stats/WeeklyXPChart';
 import { ActivityCard } from '@/components/home/RecentActivities/ActivityCard';
-import { useHeader } from '@/contexts/HeaderContext';
+import { useHeader } from '@/context/HeaderContext';
 import { AuthContext } from '@/context/AuthProvider';
 
 
@@ -35,7 +35,7 @@ export default function TrainingStats() {
       });
       setStatsData(response.data);
     } catch (error) {
-      console.error('Erreur lors de la récupération des statistiques:', error);
+      console.error('Error while fetching stats:', error);
     }
   }, [userAuth]);
 

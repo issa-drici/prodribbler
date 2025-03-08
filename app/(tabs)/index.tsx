@@ -58,7 +58,7 @@ export default function HomeScreen() {
   return (
     <ViewScreen>
       <StatsSection totalTime={formatTime(homeData?.stats?.total_training_time)} totalXp={homeData?.stats?.total_xp} />
-      <PlayerSection user={userAuth} totalTime={formatTime(homeData?.stats?.total_training_time)} drills={homeData?.stats?.completed_videos} />
+      <PlayerSection user={userAuth} totalTime={formatTime(homeData?.stats?.total_training_time)} drills={homeData?.stats?.completed_videos} profileImageUrl={homeData?.user?.avatar_url} />
       <ActionButtons />
       <ExperienceCard totalXp={homeData?.stats?.total_xp} />
       <RecentActivities activities={homeData?.recent_exercises} />

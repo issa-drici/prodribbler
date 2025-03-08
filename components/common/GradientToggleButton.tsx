@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
     },
     text: {
         color: '#fff',
-        fontSize: 14,
+        fontSize: 13,
         fontFamily: 'Montserrat-SemiBold',
         textAlign: 'center',
     },

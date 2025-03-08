@@ -42,9 +42,9 @@ const TABS_CONFIG = [
     inactiveIcon: homeInactive,
   },
   {
-    name: 'exercises',
-    title: 'ProDribbler Levels',
-    label: 'Exercises',
+    name: '(levels)',
+    // title: 'ProDribbler Levels',
+    label: 'Levels',
     activeIcon: exercisesActive,
     inactiveIcon: exercisesInactive,
     withoutRounding: true,

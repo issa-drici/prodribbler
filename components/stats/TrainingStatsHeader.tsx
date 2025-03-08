@@ -55,7 +55,6 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         width: '100%',
         alignItems: 'center',
-        marginVertical: 18,
         gap: 10,
     },
     rangeSelector: {

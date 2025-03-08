@@ -11,7 +11,7 @@ export default function StatsContent({ selectedRange, drillData, isRankingView =
     return (
         <View style={styles.container}>
             <Text style={styles.title}>
-                {isRankingView ? "Classement Global" : "Statistiques d'entraînement"}
+                {isRankingView ? "Global Ranking" : "Training Statistics"}
             </Text>
             {/* Ajoutez ici le contenu spécifique aux classements si isRankingView est true */}
         </View>

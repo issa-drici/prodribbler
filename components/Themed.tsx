@@ -3,7 +3,8 @@
  * https://docs.expo.io/guides/color-schemes/
  */
 
-import { Text as DefaultText, View as DefaultView, Dimensions, Platform, ScrollView, StyleSheet } from 'react-native';
+import { Text as DefaultText, View as DefaultView, Dimensions, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, StatusBar } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import Colors from '@/constants/Colors';
 import { useColorScheme } from './useColorScheme';
@@ -75,6 +76,7 @@ const SVG_HEIGHT = Dimensions.get('window').height * 5 + 120;
 export function ViewScreen(props: ViewProps) {
   const { style, children, headerComponent, withoutPadding, flexGrow, ...otherProps } = props;
   const padding = 25;
+  const insets = useSafeAreaInsets();
 
   const calculatePaddingVertical = () => {
     if (withoutPadding) {
@@ -116,13 +118,14 @@ export function ViewScreen(props: ViewProps) {
           end={{ x: 1, y: 1 }}
           colors={['#112023', '#000405']}
           style={{
-            top: Platform.OS === 'android' ? 90 : 110,
+            top: insets.top + 55,
             left: 0,
             right: 0,
             justifyContent: 'space-between',
             alignItems: 'center',
             flexDirection: 'row',
             paddingHorizontal: 26,
+            paddingTop: 15,
             paddingBottom: 15,
             borderBottomLeftRadius: 30,
             borderBottomRightRadius: 30,
@@ -133,60 +136,65 @@ export function ViewScreen(props: ViewProps) {
           {headerComponent}
         </LinearGradient>
       ) : null}
-      <ScrollView
-        style={[
-          styles.scrollContainer,
-          style,
-        ]}
-        contentContainerStyle={{
-          flexGrow
-        }}
-        bounces={false}
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={{ flex: 1 }}
       >
-        <Svg
-          width={SCREEN_WIDTH}
-          height={SVG_HEIGHT}
-          style={styles.svgBackground}
+        <ScrollView
+          style={[
+            styles.scrollContainer,
+            style,
+          ]}
+          contentContainerStyle={{
+            flexGrow
+          }}
+          bounces={false}
         >
-          <Defs>
-            {/* Dégradé radial (blanc -> transparent) */}
-            <RadialGradient id="whiteHalo" cx="50%" cy="50%" r="50%">
-              <Stop offset="0%" stopColor="#29383B" stopOpacity={1} />
-              <Stop offset="100%" stopColor="#29383B" stopOpacity={0} />
-            </RadialGradient>
-          </Defs>
-
-          {/* Fond noir global */}
-          <Rect
-            x={0}
-            y={0}
+          <Svg
             width={SCREEN_WIDTH}
             height={SVG_HEIGHT}
-            fill="#1F2120"
-          />
+            style={styles.svgBackground}
+          >
+            <Defs>
+              {/* Dégradé radial (blanc -> transparent) */}
+              <RadialGradient id="whiteHalo" cx="50%" cy="50%" r="50%">
+                <Stop offset="0%" stopColor="#29383B" stopOpacity={1} />
+                <Stop offset="100%" stopColor="#29383B" stopOpacity={0} />
+              </RadialGradient>
+            </Defs>
 
-          {/* Halos partiellement hors-écran */}
-          {halos.map((halo) => (
-            <Circle
-              key={halo.key}
-              cx={halo.cx}
-              cy={halo.cy}
-              r={halo.r}
-              fill="url(#whiteHalo)"
+            {/* Fond noir global */}
+            <Rect
+              x={0}
+              y={0}
+              width={SCREEN_WIDTH}
+              height={SVG_HEIGHT}
+              fill="#1F2120"
             />
-          ))}
-        </Svg>
 
-        {/* Contenu avec padding */}
-        <DefaultView style={{
-          padding: padding,
-          paddingVertical: calculatePaddingVertical(),
-          flexGrow
-        }}>
-          {children}
-        </DefaultView>
+            {/* Halos partiellement hors-écran */}
+            {halos.map((halo) => (
+              <Circle
+                key={halo.key}
+                cx={halo.cx}
+                cy={halo.cy}
+                r={halo.r}
+                fill="url(#whiteHalo)"
+              />
+            ))}
+          </Svg>
 
-      </ScrollView>
+          {/* Contenu avec padding */}
+          <DefaultView style={{
+            padding: padding,
+            paddingVertical: calculatePaddingVertical(),
+            flexGrow
+          }}>
+            {children}
+          </DefaultView>
+
+        </ScrollView>
+      </KeyboardAvoidingView>
     </>
 
   );

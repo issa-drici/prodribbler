@@ -20,7 +20,7 @@ export default function ModalScreen() {
         </View>
         <ScrollView style={styles.notificationContainer}>
           <Text style={styles.noNotification}>
-            Aucune notification
+            No notifications
           </Text>
         </ScrollView>
       </View>

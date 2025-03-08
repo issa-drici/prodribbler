@@ -10,9 +10,9 @@ const ContactSupport = () => {
     return (
         <View style={styles.supportContainer}>
             <Text style={styles.supportTitle}>Contact Support</Text>
-            <Text style={styles.supportDescription}>
+            {/* <Text style={styles.supportDescription}>
                 Lorem ipsum dolor sit amet consectetur. Quam laoreet ornare massa ut sed sed ut nisl. Etiam facilisi morbi laoreet parturient ultricies. Pellentesque tincidunt placerat lacus tellus purus.
-            </Text>
+            </Text> */}
 
             <View style={styles.issueContainer}>
                 <Text style={styles.issueTitle}>What issue are you experiencing?</Text>
@@ -47,17 +47,25 @@ const ContactSupport = () => {
 export default function FAQScreen() {
     const faqItems = [
         {
-            title: "Lorem ipsum dolor sit amet consectetur. Semper sed in sit vestibulum",
-            content: "Lorem ipsum dolor sit amet consectetur. Nibh turpis odio lacus at dictumst. Suspendisse nibh gravida blandit consectetur quis ac. In odio id tortor purus. Lectus vel non urna convallis aliquet tincidunt vitae volutpat et. At amet quam egestas hendrerit accumsan."
+            title: "About ProDribbler",
+            content: "Welcome to ProDribbler, the ultimate training app for developing top-tier ball control and refining your football skills.\n\nOur program is designed specifically for young players and beginners looking to enhance their close-range ball control and master key techniques. By following a structured routine, setting clear objectives, and staying disciplined, players can make significant progress in a short time. ProDribbler encourages focus and consistency, helping athletes unlock their full potential while steadily improving their performance.\n\nStay engaged, complete each drill with dedication, and earn rewards as you advance. With ProDribbler, every session brings you closer to mastering the art of ball control."
         },
         {
-            title: "Lorem ipsum dolor sit amet consectetur. Semper sed in sit vestibulum",
-            content: "Lorem ipsum dolor sit amet consectetur..."
+            title: "Where is my activation code?",
+            content: "After your purchase, you will have received an e-mail with a code enabling you to activate your access to the application. Be sure to check your spam folder.\n\n⚠️ This code is for one-time use only! ⚠️\n\nIf you think you haven't received anything, contact us at contact@prodribbler.com"
         },
         {
-            title: "Lorem ipsum dolor sit amet consectetur. Semper sed in sit vestibulum",
-            content: "Lorem ipsum dolor sit amet consectetur..."
+            title: "How do I unlock the ProDribbler training videos?",
+            content: "Unlock the ProDribbler training videos with your verification code - your unique code can be found on the email you received after your purchase.\n\nSimply enter the code when you register on the app to unlock the training program. You can do this on your phone or tablet."
         },
+        {
+            title: "How to update my ProDribbler profile?",
+            content: "1. Open the ProDribbler app and sign in\n2. Go to \"Profile\"\n3. Add your profile photo\n4. Complete your information\n5. Set your current goals"
+        },
+        {
+            title: "App Usage on different devices",
+            content: "We support cross-platform access! You can use our app on iOS, Android, TV or PC.\n\n- iOS & Android: Download the ProDribbler app directly from the App Store or Play Store.\n- TV/PC: Simply cast the video of your choice onto your compatible TV or computer. If your device is compatible, make sure both are connected to the same internet connection."
+        }
     ];
 
     const [expandedIndex, setExpandedIndex] = React.useState<number | null>(null);

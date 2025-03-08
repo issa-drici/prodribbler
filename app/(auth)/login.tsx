@@ -10,6 +10,11 @@ export default function LoginScreen() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const { login, error, isLoading } = useContext(AuthContext);
+  const [hidePassword, setHidePassword] = useState(true);
+
+  const togglePasswordVisibility = () => {
+    setHidePassword(!hidePassword);
+  };
 
   // const handleLogin = async () => {
   //   try {
@@ -55,10 +60,10 @@ export default function LoginScreen() {
                 placeholder='Password'
                 placeholderTextColor='#fff'
                 onSubmitEditing={() => login(email, password)}
-                secureTextEntry
+                secureTextEntry={hidePassword}
               />
-              <TouchableOpacity style={styles.eyeIcon}>
-                {/* Ajouter l'icône œil ici */}
+              <TouchableOpacity style={styles.eyeIcon} onPress={togglePasswordVisibility}>
+                <Image source={require('@/assets/icons/eye.png')} style={styles.eyeIcon} />
               </TouchableOpacity>
             </View>
 
@@ -158,7 +163,7 @@ const styles = StyleSheet.create({
   eyeIcon: {
     position: 'absolute',
     right: 0,
-    height: '100%',
+    top: 0,
     justifyContent: 'center',
     padding: 10,
   },

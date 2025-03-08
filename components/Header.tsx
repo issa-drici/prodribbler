@@ -4,7 +4,7 @@ import { Link } from 'expo-router';
 import { Text, View } from '@/components/Themed';
 import menu from '@/assets/icons/menu.png';
 import notification from '@/assets/icons/notification.png';
-import { useHeader } from '@/contexts/HeaderContext';
+import { useHeader } from '@/context/HeaderContext';
 
 type HeaderProps = {
     title?: string;

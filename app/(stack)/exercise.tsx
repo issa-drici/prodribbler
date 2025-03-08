@@ -44,7 +44,7 @@ export default function ExerciseScreen() {
                 );
                 setExerciseData(response.data);
             } catch (error) {
-                console.error('Erreur lors de la récupération des données de l\'exercice:', error);
+                console.error('Error while fetching exercise data:', error);
             }
         }
     }, [userAuth, parsedData.id]);
@@ -65,7 +65,7 @@ export default function ExerciseScreen() {
             });
             setWatchTime(currentTime);
         } catch (error) {
-            console.error('Erreur lors de la mise à jour du progrès:', error);
+            console.error('Error while updating progress:', error);
         }
     };
 
@@ -75,7 +75,7 @@ export default function ExerciseScreen() {
             axios.defaults.headers.common['Authorization'] = `Bearer ${userAuth?.token}`;
             await axios.post(`https://api.prodribbler.alliance-tech.fr/api/user-exercises/${parsedData.id}/complete`);
         } catch (error) {
-            console.error('Erreur lors du marquage comme complété:', error);
+            console.error('Error while marking as completed:', error);
         }
     };
 
@@ -87,7 +87,7 @@ export default function ExerciseScreen() {
         if (status.isPlaying) {
             // Convertir les millisecondes en secondes et arrondir pour éviter les décimales
             const currentTimeInSeconds = Math.floor(status.positionMillis / 1000);
-            
+
             // Vérifier si le temps actuel est un multiple de 5 et qu'il est différent du dernier temps traité
             if (currentTimeInSeconds % 5 === 0 && currentTimeInSeconds > lastProcessedTime.current) {
                 console.log('Sending update for time:', currentTimeInSeconds);
@@ -120,32 +120,32 @@ export default function ExerciseScreen() {
         const minutes = Math.floor(seconds / 60);
         const remainingSeconds = seconds % 60;
         return `${minutes}m${remainingSeconds.toString().padStart(2, '0')}s`;
-      };
+    };
 
     return (
         <ViewScreen headerComponent={
             <>
-                <Pressable 
+                <Pressable
                     onPress={async () => {
                         try {
                             axios.defaults.headers.common['Authorization'] = `Bearer ${userAuth?.token}`;
                             if (exerciseData?.is_favorite) {
                                 await axios.delete(`https://api.prodribbler.alliance-tech.fr/api/favorites/exercise/${parsedData.id}`);
-                                Alert.alert('Succès', 'Exercice retiré des favoris');
+                                Alert.alert('Success', 'Exercise removed from favorites');
                             } else {
                                 await axios.post('https://api.prodribbler.alliance-tech.fr/api/favorites', {
                                     exercise_id: parsedData.id
                                 });
-                                Alert.alert('Succès', 'Exercice ajouté aux favoris');
+                                Alert.alert('Success', 'Exercise added to favorites');
                             }
                             // Rafraîchir les données après le succès
                             setExerciseData(null);
                             fetchExerciseData();
                         } catch (error) {
-                            console.error('Erreur lors de la modification des favoris:', error);
-                            Alert.alert('Erreur', 'Impossible de modifier les favoris');
+                            console.error('Error while modifying favorites:', error);
+                            Alert.alert('Error', 'Impossible to modify favorites');
                         }
-                    }} 
+                    }}
                     style={{ flex: 1 }}
                 >
                     {({ pressed }) => (

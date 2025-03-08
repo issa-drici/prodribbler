@@ -16,7 +16,7 @@ export function RecentActivities({ activities }: { activities: any }) {
           key={activity.id}
           image={activity.banner_url}
           title={activity.title}
-          description={`Découvrez cet exercice ${activity.title} dès maintenant !`}
+          description={`Discover this exercise ${activity.title} now !`}
           exerciseData={activity}
         />
       ))}

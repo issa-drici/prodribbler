@@ -6,7 +6,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import { useContext, useEffect, useState } from 'react';
 import 'react-native-reanimated';
 import { StatusBar } from 'expo-status-bar';
-import { HeaderProvider } from '@/contexts/HeaderContext';
+import { HeaderProvider } from '@/context/HeaderContext';
 // import { AuthProvider, useAuth } from '@/contexts/AuthContext';
 import { Text, View } from '@/components/Themed';
 import { ActivityIndicator, Image } from 'react-native';

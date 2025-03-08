@@ -15,19 +15,24 @@ export default function SignupScreen() {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [verificationCode, setVerificationCode] = useState('');
   const { register, error, isLoading } = useContext(AuthContext);
+  const [hidePassword, setHidePassword] = useState(true);
+
+  const togglePasswordVisibility = () => {
+    setHidePassword(!hidePassword);
+  };
 
   const handleSignup = async () => {
     try {
       if (step === 1) {
         // Validations de base
         if (!name || !email || !password || !confirmPassword) {
-          throw new Error('Tous les champs sont requis');
+          throw new Error('All fields are required');
         }
         if (password !== confirmPassword) {
-          throw new Error('Les mots de passe ne correspondent pas');
+          throw new Error('Passwords do not match');
         }
         if (password.length < 8) {
-          throw new Error('Le mot de passe doit contenir au moins 8 caractères');
+          throw new Error('Password must be at least 8 characters long');
         }
 
         // Si tout est OK, passer à l'étape du code de vérification
@@ -35,7 +40,7 @@ export default function SignupScreen() {
       } else {
         // Étape finale : inscription avec le code de vérification
         if (!verificationCode) {
-          throw new Error('Le code de vérification est requis');
+          throw new Error('Verification code is required');
         }
 
         await register(email, password, name, verificationCode);
@@ -81,23 +86,33 @@ export default function SignupScreen() {
                 keyboardType="email-address"
               />
 
-              <TextInput
-                style={styles.input}
-                placeholder="Password"
-                placeholderTextColor="#fff"
-                value={password}
-                onChangeText={setPassword}
-                secureTextEntry
-              />
+              <View style={styles.passwordContainer}>
+                <TextInput
+                  style={[styles.input, styles.passwordInput]}
+                  placeholder="Password"
+                  placeholderTextColor="#fff"
+                  value={password}
+                  onChangeText={setPassword}
+                  secureTextEntry={hidePassword}
+                />
+                <TouchableOpacity style={styles.eyeIcon} onPress={togglePasswordVisibility}>
+                  <Image source={require('@/assets/icons/eye.png')} style={styles.eyeIcon} />
+                </TouchableOpacity>
+              </View>
 
-              <TextInput
-                style={styles.input}
-                placeholder="Confirm Password"
-                placeholderTextColor="#fff"
-                value={confirmPassword}
-                onChangeText={setConfirmPassword}
-                secureTextEntry
-              />
+              <View style={styles.passwordContainer}>
+                <TextInput
+                  style={[styles.input, styles.passwordInput]}
+                  placeholder="Confirm Password"
+                  placeholderTextColor="#fff"
+                  value={confirmPassword}
+                  onChangeText={setConfirmPassword}
+                  secureTextEntry={hidePassword}
+                />
+                <TouchableOpacity style={styles.eyeIcon} onPress={togglePasswordVisibility}>
+                  <Image source={require('@/assets/icons/eye.png')} style={styles.eyeIcon} />
+                </TouchableOpacity>
+              </View>
             </View>
           ) : (
             <View style={styles.formContainer}>
@@ -197,6 +212,20 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
     marginBottom: 20,
     fontSize: 16,
+  },
+  passwordContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  passwordInput: {
+    flex: 1,
+  },
+  eyeIcon: {
+    position: 'absolute',
+    right: 0,
+    top: 0,
+    justifyContent: 'center',
+    padding: 10,
   },
   button: {
     padding: 15,

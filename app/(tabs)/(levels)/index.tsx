@@ -1,11 +1,12 @@
 import { StyleSheet } from 'react-native';
-import { View, ViewScreen } from '@/components/Themed';
-import { ActivityCard } from '@/components/home/RecentActivities/ActivityCard';
+import { Text, View, ViewScreen } from '@/components/Themed';
 import { useContext, useEffect, useState, useCallback } from 'react';
 import GradientToggleButton from '@/components/common/GradientToggleButton';
 import axios from 'axios';
 import { AuthContext } from '@/context/AuthProvider';
 import { useFocusEffect } from '@react-navigation/native';
+import { LevelCard } from '@/components/LevelCard';
+import { useHeader } from '@/context/HeaderContext';
 
 const formatDuration = (seconds: number): string => {
   const minutes = Math.floor(seconds / 60);
@@ -13,7 +14,9 @@ const formatDuration = (seconds: number): string => {
   return `${minutes}m${remainingSeconds.toString().padStart(2, '0')}s`;
 };
 
-export default function ExercisesScreen() {
+export default function LevelsScreen() {
+  const { setTitle } = useHeader();
+
   const experienceSteps = [
     '500 XP',
     '1000 XP',
@@ -43,6 +46,8 @@ export default function ExercisesScreen() {
     }, [getAllExercises])
   );
 
+  // console.log(data?.categories?.[selectedLevel][0])
+
   return (
     <ViewScreen headerComponent={
       <View style={styles.rangeSelector}>
@@ -57,25 +62,27 @@ export default function ExercisesScreen() {
       </View>
     }>
 
-      {data?.levels[selectedLevel].map((video) => (
-        <ActivityCard
-          key={video.id}
-          blackBackground
-          image={video.banner_url}
-          title={video.title}
-          description={`Découvrez cet exercice de ${video.title} de niveau ${selectedLevel} dès maintenant !`}
-          isCompleted={video.isCompleted}
-          exerciseData={{
-            id: video.id,
-            name: video.title,
-            duration: video.duration_seconds,
-            level: selectedLevel.charAt(0).toUpperCase() + selectedLevel.slice(1),
-            completed: true,
-            thumbnail: video.banner_url,
-            link: video.video_url,
-           
-          }}
-        />))}
+      {data?.categories?.[selectedLevel]?.map((level) => {
+        const duration = level.exercises.reduce((acc, curr) => acc + curr.duration_seconds, 0)
+        const isCompleted = level.exercises.every(exercise => exercise.isCompleted)
+        const totalExercises = level.exercises.length
+        const completedExercises = level.exercises.filter(exercise => exercise.isCompleted).length
+
+        return (
+          <LevelCard
+            key={level.id}
+            id={level.id}
+            blackBackground
+            image={level.banner_url}
+            title={level.name}
+            description={level.description}
+            isCompleted={isCompleted}
+            duration={duration}
+            totalExercises={totalExercises}
+            completedExercises={completedExercises}
+          />
+        )
+      })}
     </ViewScreen>
   );
 }
@@ -85,9 +92,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginVertical: 10,
     borderRadius: 8,
-    padding: 4,
     gap: 10,
   },
 });
