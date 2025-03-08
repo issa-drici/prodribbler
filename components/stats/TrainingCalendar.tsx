@@ -1,7 +1,9 @@
 import React from 'react';
 import { Image, Pressable, StyleSheet, TouchableOpacity } from 'react-native';
 import { Text, View } from '@/components/Themed';
+// @ts-ignore
 import leftArrow from '@/assets/icons/left-arrow.png';
+// @ts-ignore
 import rightArrow from '@/assets/icons/right-arrow.png';
 
 interface CalendarProps {
@@ -158,7 +160,7 @@ export default function TrainingCalendar({
     setSelectedDate(date);
     if (onDateSelect) {
       let selection;
-      let startDate, endDate;
+      let startDate: Date, endDate: Date;
 
       switch (selectedRange) {
         case 'day':

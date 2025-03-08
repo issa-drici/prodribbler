@@ -7,7 +7,7 @@ type GradientToggleButtonProps = {
     text: string;
     isActive: boolean;
     onPress: () => void;
-    activeColors?: string[];
+    activeColors?: readonly [string, string, ...string[]];
     style?: object;
 };
 
@@ -15,16 +15,18 @@ export default function GradientToggleButton({
     text,
     isActive,
     onPress,
-    activeColors = ['#6FD3D1', '#0FB9ED'],
+    activeColors = ['#6FD3D1', '#0FB9ED'] as const,
     style
 }: GradientToggleButtonProps) {
+    const transparentColors = ['transparent', 'transparent'] as const;
+    
     return (
         <Pressable onPress={onPress} style={styles.pressable}>
             {({ pressed }) => (
                 <LinearGradient
                     start={{ x: 0, y: 0 }}
                     end={{ x: 1, y: 1 }}
-                    colors={isActive ? activeColors : ['transparent', 'transparent']}
+                    colors={isActive ? activeColors : transparentColors}
                     style={[
                         styles.button,
                         { opacity: pressed ? 0.8 : 1 },

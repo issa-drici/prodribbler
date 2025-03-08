@@ -11,6 +11,18 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { ResizeMode, Video } from 'expo-av';
 import { AuthContext } from '@/context/AuthProvider';
 
+interface ExerciseData {
+    id: string;
+    title: string;
+    banner_url: string;
+    video_url: string;
+    duration_seconds: number;
+    is_favorite: boolean;
+    user_progress?: {
+        is_completed: boolean;
+    };
+}
+
 export default function ExerciseScreen() {
     const beforeYouBeginSteps = [
         'Repeat each drill at least 3 times for 30 seconds',
@@ -27,13 +39,13 @@ export default function ExerciseScreen() {
     const descriptionText = 'Remember, the lines and numbers on the Ball Mastery Mat are simply guides to help players understand and learn the drills more quickly. Don\'t get frustrated if the ball doesn\'t follow the lines and numbers perfectly. What\'s most important is that the move you\'re trying to execute is correct.';
 
     const { data } = useGlobalSearchParams();
-    const parsedData = data ? JSON.parse(data) : {};
+    const parsedData = data ? JSON.parse(data as string) : {};
     const [isPlaying, setIsPlaying] = useState(false);
     const [watchTime, setWatchTime] = useState(0);
     const videoRef = useRef(null);
     const { user: userAuth } = useContext(AuthContext);
     const lastProcessedTime = useRef(0);
-    const [exerciseData, setExerciseData] = useState(null);
+    const [exerciseData, setExerciseData] = useState<ExerciseData | null>(null);
 
     const fetchExerciseData = useCallback(async () => {
         if (userAuth && parsedData.id) {
@@ -184,7 +196,7 @@ export default function ExerciseScreen() {
         }>
             <View style={styles.imageContainer}>
                 {!isPlaying ? (
-                    <ImageBackground source={{ uri: exerciseData?.banner_url }} resizeMode="cover" style={styles.image}>
+                    <ImageBackground source={{ uri: exerciseData?.banner_url || '' }} resizeMode="cover" style={styles.image}>
                         {exerciseData?.user_progress?.is_completed && <View style={styles.completedBadge}>
                             <Text style={styles.completedText}>Completed</Text>
                         </View>}
@@ -198,7 +210,7 @@ export default function ExerciseScreen() {
                 ) : (
                     <Video
                         ref={videoRef}
-                        source={{ uri: exerciseData?.video_url }}
+                        source={{ uri: exerciseData?.video_url || '' }}
                         style={styles.video}
                         useNativeControls
                         resizeMode={ResizeMode.COVER}
@@ -212,7 +224,7 @@ export default function ExerciseScreen() {
             <View style={styles.infoRow}>
                 <View style={styles.durationContainer}>
                     <Ionicons name="time-outline" size={20} color="#fff" />
-                    <Text style={{ color: '#fff', fontSize: 16 }}>{formatDuration(exerciseData?.duration_seconds)}</Text>
+                    <Text style={{ color: '#fff', fontSize: 16 }}>{formatDuration(exerciseData?.duration_seconds || 0)}</Text>
                 </View>
                 <View style={styles.difficultyContainer}>
                     <Text style={{ color: '#fff' }}>Difficulty Level:</Text>
@@ -220,7 +232,7 @@ export default function ExerciseScreen() {
                 </View>
             </View>
 
-            <Text style={styles.title}>{exerciseData?.title}</Text>
+            <Text style={styles.title}>{exerciseData?.title || ''}</Text>
             <View style={styles.divider} />
             <GradientText style={styles.sectionTitle} colors={['#fff', '#124473']}>Before You Begin</GradientText>
             {beforeYouBeginSteps.map((instruction: string, index: number) => (
@@ -274,7 +286,7 @@ const styles = StyleSheet.create({
     },
     image: {
         flex: 1,
-        height: Dimensions.get('window').height * 0.25,
+        height: Dimensions.get('window').height * 0.22,
         alignItems: 'center',
         justifyContent: 'center',
         padding: 15,
@@ -381,7 +393,7 @@ const styles = StyleSheet.create({
     },
     video: {
         width: '100%',
-        height: Dimensions.get('window').height * 0.25,
+        height: Dimensions.get('window').height * 0.22,
     },
 });
 

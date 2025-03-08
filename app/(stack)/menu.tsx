@@ -5,11 +5,17 @@ import { Link, useRouter } from 'expo-router';
 import { Pressable } from 'react-native';
 import { GradientText } from '@/components/GradientText';
 import { AuthContext } from '@/context/AuthProvider';
+// @ts-ignore
 import menu from '@/assets/icons/menu.png';
+// @ts-ignore
 import homeActive from '@/assets/icons/home-active.png';
+// @ts-ignore
 import exercisesActive from '@/assets/icons/exercises-active.png';
+// @ts-ignore
 import trainingStatsActive from '@/assets/icons/training-stats-active.png';
+// @ts-ignore
 import faqActive from '@/assets/icons/faq-active.png';
+// @ts-ignore
 import settingsActive from '@/assets/icons/settings-active.png';
 import { CommonActions } from '@react-navigation/native';
 import { useNavigation } from '@react-navigation/native';

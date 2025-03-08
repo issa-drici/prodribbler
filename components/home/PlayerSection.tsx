@@ -17,7 +17,7 @@ export function PlayerSection({ user, totalTime, drills, withEditImage, userAuth
     const rotation = useRef(new Animated.Value(0)).current;
     
     useEffect(() => {
-        let rotationAnimation;
+        let rotationAnimation: Animated.CompositeAnimation | undefined;
         if (isLoading) {
             // Réinitialiser la valeur
             rotation.setValue(0);

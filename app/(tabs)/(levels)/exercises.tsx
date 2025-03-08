@@ -17,11 +17,13 @@ interface Exercise {
   video_url: string;
   duration_seconds: number;
   isCompleted: boolean;
+  description?: string;
 }
 
 interface ExerciseData {
   name: string;
   exercises: Exercise[];
+  category?: string;
 }
 
 interface ApiResponse {
@@ -38,7 +40,7 @@ export default function ExercisesScreen() {
 
   const getAllExercisesByLevelId = useCallback(async () => {
     if (user) {
-      setTitle(null);
+      setTitle('');
       
       await axios.get(`https://api.prodribbler.alliance-tech.fr/api/exercises/level/${levelId}/user/${user.id}`)
         .then((response) => {
@@ -48,7 +50,7 @@ export default function ExercisesScreen() {
           }
         })
         .catch((error) => {
-          console.log(error);
+          console.error('Error while fetching exercises:', error);
         });
     }
   }, [user, levelId, setTitle]);
@@ -72,17 +74,16 @@ export default function ExercisesScreen() {
           blackBackground
           image={video.banner_url}
           title={video.title}
-          description={video.description}
+          description={video.description || ''}
           isCompleted={video.isCompleted}
           exerciseData={{
             id: video.id,
             name: video.title,
             duration: video.duration_seconds,
-            level: data?.data?.category.charAt(0).toUpperCase() + data?.data?.category.slice(1),
+            level: data?.data?.category ? `${data.data.category.charAt(0).toUpperCase()}${data.data.category.slice(1)}` : '',
             completed: true,
             thumbnail: video.banner_url,
             link: video.video_url,
-
           }}
         />))}
     </ViewScreen>

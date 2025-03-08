@@ -3,6 +3,7 @@ import { Text, View } from "@/components/Themed";
 import { LinearGradient } from "expo-linear-gradient";
 import { Link } from "expo-router";
 import { Image, Pressable, StyleSheet } from "react-native";
+import React from 'react';
 
 type ActivityCardProps = {
   image: any;
@@ -21,19 +22,14 @@ const formatDuration = (seconds: number): string => {
 
 
 export function ActivityCard({ image, title, description, exerciseData, isCompleted = false, blackBackground = false, gradient = false }: ActivityCardProps) {
-  const CardWrapper = gradient ? LinearGradient : View;
-  const gradientProps = gradient ? {
-    start: { x: 0, y: 0 },
-    end: { x: 1, y: 1 },
-    colors: ['#6FD3D1', '#0FB9ED']
-  } : {};
+  const cardStyle = [styles.activityCard, { backgroundColor: blackBackground ? '#121212' : '#1E201F' }];
 
-  return (
-    <CardWrapper style={[styles.activityCard, { backgroundColor: blackBackground ? '#121212' : '#1E201F' }]} {...gradientProps}>
+  const cardContent = (
+    <>
       {isCompleted && <View style={styles.completedBadge}>
         <Text style={styles.completedText}>Completed</Text>
       </View>}
-     <View style={styles.timeBadge}>
+      <View style={styles.timeBadge}>
         <Text style={styles.timeText}>🕑 {formatDuration(exerciseData?.duration)}</Text>
       </View>
       <Image source={{ uri: image }} style={styles.cardImage} />
@@ -51,7 +47,26 @@ export function ActivityCard({ image, title, description, exerciseData, isComple
           )}
         </Pressable>
       </Link>
-    </CardWrapper>
+    </>
+  );
+
+  if (gradient) {
+    return (
+      <LinearGradient
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
+        colors={['#6FD3D1', '#0FB9ED'] as const}
+        style={cardStyle}
+      >
+        {cardContent}
+      </LinearGradient>
+    );
+  }
+
+  return (
+    <View style={cardStyle}>
+      {cardContent}
+    </View>
   );
 }
 

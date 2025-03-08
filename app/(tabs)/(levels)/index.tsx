@@ -8,6 +8,34 @@ import { useFocusEffect } from '@react-navigation/native';
 import { LevelCard } from '@/components/LevelCard';
 import { useHeader } from '@/context/HeaderContext';
 
+interface Exercise {
+  id: string;
+  title: string;
+  banner_url: string;
+  video_url: string;
+  duration_seconds: number;
+  isCompleted: boolean;
+}
+
+interface Level {
+  id: string;
+  name: string;
+  banner_url: string;
+  exercises: Exercise[];
+  description?: string;
+}
+
+interface Categories {
+  beginner: Level[];
+  intermediate: Level[];
+  advanced: Level[];
+  [key: string]: Level[];
+}
+
+interface ApiResponse {
+  categories: Categories;
+}
+
 const formatDuration = (seconds: number): string => {
   const minutes = Math.floor(seconds / 60);
   const remainingSeconds = seconds % 60;
@@ -25,7 +53,7 @@ export default function LevelsScreen() {
     '2500 XP'
   ];
   const [selectedLevel, setSelectedLevel] = useState('beginner');
-  const [data, setData] = useState();
+  const [data, setData] = useState<ApiResponse | undefined>();
   const { user } = useContext(AuthContext);
 
   const getAllExercises = useCallback(async () => {
@@ -35,7 +63,7 @@ export default function LevelsScreen() {
           setData(response.data);
         })
         .catch((error) => {
-          console.log(error);
+          console.error('Error while fetching exercises:', error);
         });
     }
   }, [user]);
@@ -62,11 +90,11 @@ export default function LevelsScreen() {
       </View>
     }>
 
-      {data?.categories?.[selectedLevel]?.map((level) => {
-        const duration = level.exercises.reduce((acc, curr) => acc + curr.duration_seconds, 0)
-        const isCompleted = level.exercises.every(exercise => exercise.isCompleted)
+      {data?.categories?.[selectedLevel]?.map((level: Level) => {
+        const duration = level.exercises.reduce((acc: number, curr: Exercise) => acc + curr.duration_seconds, 0)
+        const isCompleted = level.exercises.every((exercise: Exercise) => exercise.isCompleted)
         const totalExercises = level.exercises.length
-        const completedExercises = level.exercises.filter(exercise => exercise.isCompleted).length
+        const completedExercises = level.exercises.filter((exercise: Exercise) => exercise.isCompleted).length
 
         return (
           <LevelCard
@@ -75,7 +103,7 @@ export default function LevelsScreen() {
             blackBackground
             image={level.banner_url}
             title={level.name}
-            description={level.description}
+            description={level.description || ''}
             isCompleted={isCompleted}
             duration={duration}
             totalExercises={totalExercises}

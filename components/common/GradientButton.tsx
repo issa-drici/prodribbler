@@ -7,7 +7,7 @@ type GradientButtonProps = {
     onPress?: () => void;
     text: string;
     icon?: ImageSourcePropType;
-    colors?: string[];
+    colors?: readonly [string, string, ...string[]];
     style?: object;
     textStyle?: object;
 };
@@ -16,7 +16,7 @@ const GradientButton = React.forwardRef<any, GradientButtonProps>(({
     onPress, 
     text, 
     icon, 
-    colors = ['#6FD3D1', '#0FB9ED'],
+    colors = ['#6FD3D1', '#0FB9ED'] as const,
     style,
     textStyle
 }, ref) => {

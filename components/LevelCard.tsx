@@ -3,6 +3,7 @@ import { Text, View } from "@/components/Themed";
 import { LinearGradient } from "expo-linear-gradient";
 import { Link } from "expo-router";
 import { Image, Pressable, StyleSheet } from "react-native";
+import React from 'react';
 
 type LevelCardProps = {
   id: string;
@@ -29,19 +30,13 @@ const formatDuration = (seconds: number): string => {
 
 
 export function LevelCard({ id, image, title, description, duration, totalExercises, completedExercises, isCompleted = false, blackBackground = false, gradient = false }: LevelCardProps) {
-  const CardWrapper = gradient ? LinearGradient : View;
-  const gradientProps = gradient ? {
-    start: { x: 0, y: 0 },
-    end: { x: 1, y: 1 },
-    colors: ['#6FD3D1', '#0FB9ED']
-  } : {};
-
   const progressPercentage = Math.min(Math.max((completedExercises / totalExercises) * 100, 0), 100);
   const progressDotPosition = 100 - progressPercentage;
 
+  const cardStyle = [styles.activityCard, { backgroundColor: blackBackground ? '#121212' : '#1E201F' }];
 
-  return (
-    <CardWrapper style={[styles.activityCard, { backgroundColor: blackBackground ? '#121212' : '#1E201F' }]} {...gradientProps}>
+  const cardContent = (
+    <>
       {isCompleted && <View style={styles.completedBadge}>
         <Text style={styles.completedText}>Completed</Text>
       </View>}
@@ -59,18 +54,16 @@ export function LevelCard({ id, image, title, description, duration, totalExerci
           <LinearGradient
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 0 }}
-            colors={['#97D8C5', '#25BEE6']}
+            colors={['#97D8C5', '#25BEE6'] as const}
             style={[styles.progressGradient, { width: `${progressPercentage}%` }]}
           />
           <View style={[styles.progressDot, { right: `${progressDotPosition}%` }]} />
         </View>
       </View>
 
-
-
       <Text style={styles.cardDescription}>{description}</Text>
       <Link href={{
-        pathname: '/(levels)/exercises',
+        pathname: '/exercises',
         params: { level_id: id },
       }} asChild>
         <Pressable>
@@ -81,7 +74,26 @@ export function LevelCard({ id, image, title, description, duration, totalExerci
           )}
         </Pressable>
       </Link>
-    </CardWrapper>
+    </>
+  );
+
+  if (gradient) {
+    return (
+      <LinearGradient
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
+        colors={['#6FD3D1', '#0FB9ED'] as const}
+        style={cardStyle}
+      >
+        {cardContent}
+      </LinearGradient>
+    );
+  }
+
+  return (
+    <View style={cardStyle}>
+      {cardContent}
+    </View>
   );
 }
 

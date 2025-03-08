@@ -2,16 +2,24 @@ import React from 'react';
 import {  Tabs } from 'expo-router';
 import { useClientOnlyValue } from '@/components/useClientOnlyValue';
 
+// @ts-ignore
 import homeActive from '@/assets/icons/home-active.png';
+// @ts-ignore
 import homeInactive from '@/assets/icons/home-inactive.png';
 
+// @ts-ignore
 import exercisesActive from '@/assets/icons/exercises-active.png';
+// @ts-ignore
 import exercisesInactive from '@/assets/icons/exercises-inactive.png';
 
+// @ts-ignore
 import trainingStatsActive from '@/assets/icons/training-stats-active.png';
+// @ts-ignore
 import trainingStatsInactive from '@/assets/icons/training-stats-inactive.png';
 
+// @ts-ignore
 import profileActive from '@/assets/icons/profile-active.png';
+// @ts-ignore
 import profileInactive from '@/assets/icons/profile-inactive.png';
 
 
@@ -33,7 +41,16 @@ const TAB_BAR_STYLE = {
   paddingTop: 8,
 } as const;
 
-const TABS_CONFIG = [
+interface TabConfig {
+  name: string;
+  title?: string;
+  label: string;
+  activeIcon: any;
+  inactiveIcon: any;
+  withoutRounding?: boolean;
+}
+
+const TABS_CONFIG: TabConfig[] = [
   {
     name: 'index',
     title: 'Welcome to ProDribbler',
@@ -85,7 +102,7 @@ export default function TabLayout() {
             headerTransparent: true,
             header: () => <Header title={tab.title} withoutRounding={tab.withoutRounding ?? false} />,
             tabBarStyle: TAB_BAR_STYLE,
-            tabBarButton: (props) => (
+            tabBarButton: (props: any) => (
               <TabBarButton
                 {...props}
                 activeIcon={tab.activeIcon}

@@ -2,7 +2,9 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Image, Pressable, SafeAreaView, Platform } from 'react-native';
 import { Link } from 'expo-router';
 import { Text, View } from '@/components/Themed';
+// @ts-ignore
 import menu from '@/assets/icons/menu.png';
+// @ts-ignore
 import notification from '@/assets/icons/notification.png';
 import { useHeader } from '@/context/HeaderContext';
 

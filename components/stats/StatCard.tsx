@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, StyleSheet, View } from 'react-native';
+import { Image, StyleSheet, View, ImageSourcePropType } from 'react-native';
 import { Text } from '@/components/Themed';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Entypo } from '@expo/vector-icons';
@@ -7,7 +7,7 @@ import { Entypo } from '@expo/vector-icons';
 type PropsStatCard = {
   label: string,
   value: string,
-  icon: keyof typeof Entypo.glyphMap,
+  icon: ImageSourcePropType,
   fullWidth?: boolean,
   backgroundColor?: string,
 }

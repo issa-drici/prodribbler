@@ -3,6 +3,7 @@ import { Image, Pressable, StyleSheet, TouchableOpacity } from 'react-native';
 import { Text, View } from '@/components/Themed';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Link } from 'expo-router';
+// @ts-ignore
 import podium from '@/assets/icons/podium.png';
 import GradientButton from '@/components/common/GradientButton';
 import GradientToggleButton from '@/components/common/GradientToggleButton';

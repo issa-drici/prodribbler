@@ -3,8 +3,11 @@ import { Text, View, ViewScreen } from '@/components/Themed';
 import { PlayerSection } from '@/components/home/PlayerSection';
 import { RecentActivities } from '@/components/home/RecentActivities';
 import StatCard from '@/components/stats/StatCard';
+// @ts-ignore
 import clock from '@/assets/icons/clock.png';
+// @ts-ignore
 import drills from '@/assets/icons/drills.png';
+// @ts-ignore
 import analytics from '@/assets/icons/analytics.png';
 import { useContext, useState, useCallback } from 'react';
 import { AuthContext } from '@/context/AuthProvider';
@@ -18,9 +21,9 @@ export default function ProfileScreen() {
   const { user: userAuth } = useContext(AuthContext);
   const [profileData, setProfileData] = useState<any>(null);
   // const [goals, setGoals] = useState("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod.");
-  const [goals, setGoals] = useState();
+  const [goals, setGoals] = useState<string>('');
   const [modalVisible, setModalVisible] = useState(false);
-  const [tempGoals, setTempGoals] = useState();
+  const [tempGoals, setTempGoals] = useState<string>('');
 
   const fetchProfileData = useCallback(() => {
     if (userAuth) {
@@ -29,7 +32,7 @@ export default function ProfileScreen() {
       axios.get('https://api.prodribbler.alliance-tech.fr/api/profile')
         .then(response => {
           setProfileData(response.data);
-          setGoals(response?.data?.current_goals)
+          setGoals(response?.data?.current_goals || '');
         })
         .catch(error => {
           console.error('Error while fetching profile data:', error);

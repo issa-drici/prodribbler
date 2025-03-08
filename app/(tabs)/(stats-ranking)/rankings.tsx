@@ -8,9 +8,23 @@ import { AuthContext } from '@/context/AuthProvider';
 import axios from 'axios';
 import { useFocusEffect } from '@react-navigation/native';
 
+// Définir l'interface pour les données de classement
+interface RankingItem {
+    rank: number;
+    full_name: string;
+    avatar_url: string | null;
+    is_current_user: boolean;
+    streak: number;
+    total_xp: number;
+}
+
+interface RankingData {
+    rankings: RankingItem[];
+}
+
 export default function RankingsScreen() {
     const [selectedRange, setSelectedRange] = React.useState<'day' | 'week' | 'month'>('week');
-    const [rankingData, setRankingData] = useState([]);
+    const [rankingData, setRankingData] = useState<RankingData>({ rankings: [] });
     const { user: userAuth } = useContext(AuthContext);
 
     const fetchRankings = useCallback(async () => {
@@ -34,7 +48,7 @@ export default function RankingsScreen() {
             fetchRankings();
         }, [fetchRankings])
     );
-    console.log(rankingData);
+
     return (
         <ViewScreen headerComponent={
             <View style={styles.header}>
@@ -93,7 +107,6 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         width: '100%',
         alignItems: 'center',
-        marginVertical: 18,
         gap: 10,
     },
     rangeSelector: {

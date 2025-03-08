@@ -8,6 +8,8 @@ interface AuthContextType {
   login: (email: string, password: string) => void;
   logout: () => void;
   register: (email: string, password: string, name: string, verification_code: string) => void;
+  error: string | null;
+  isLoading: boolean;
 }
 
 interface User {

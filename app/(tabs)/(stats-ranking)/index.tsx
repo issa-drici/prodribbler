@@ -6,8 +6,11 @@ import axios from 'axios';
 
 import { Text, View, ViewScreen } from '@/components/Themed';
 import StatCard from '@/components/stats/StatCard';
+// @ts-ignore
 import clock from '@/assets/icons/clock.png';
+// @ts-ignore
 import drills from '@/assets/icons/drills.png';
+// @ts-ignore
 import analytics from '@/assets/icons/analytics.png';
 import TrainingCalendar from '@/components/stats/TrainingCalendar';
 import TrainingStatsHeader from '@/components/stats/TrainingStatsHeader';
@@ -16,11 +19,17 @@ import { ActivityCard } from '@/components/home/RecentActivities/ActivityCard';
 import { useHeader } from '@/context/HeaderContext';
 import { AuthContext } from '@/context/AuthProvider';
 
+interface StatsData {
+  videos_completed: string;
+  total_xp: string;
+  total_training_time: number;
+  overall_xp: any;
+}
 
 export default function TrainingStats() {
   const [selectedRange, setSelectedRange] = React.useState<'day' | 'week' | 'month'>('day');
   const [selectedDate, setSelectedDate] = React.useState<Date>(new Date());
-  const [statsData, setStatsData] = React.useState(null);
+  const [statsData, setStatsData] = React.useState<StatsData | null>(null);
   const { user: userAuth } = useContext(AuthContext);
 
   const fetchStats = useCallback(async (startDate: Date, endDate: Date, period: 'day' | 'week' | 'month') => {
@@ -112,12 +121,12 @@ export default function TrainingStats() {
         <View style={styles.statsContainer}>
           <View style={styles.stats}>
             <Text style={styles.statsTitle}>Cumulative Metrics</Text>
-            <StatCard label="Total drills completed" value={statsData?.videos_completed} icon={drills} fullWidth />
-            <StatCard label="Total XP earned" value={statsData?.total_xp} icon={analytics} fullWidth />
-            <StatCard label="Total training time" value={formatTime(statsData?.total_training_time)} icon={clock} fullWidth />
+            <StatCard label="Total drills completed" value={statsData?.videos_completed || '0'} icon={drills} fullWidth />
+            <StatCard label="Total XP earned" value={statsData?.total_xp || '0'} icon={analytics} fullWidth />
+            <StatCard label="Total training time" value={formatTime(statsData?.total_training_time || 0)} icon={clock} fullWidth />
           </View>
         </View>
-        {statsData?.overall_xp && <WeeklyXPChart data={statsData?.overall_xp} selectedRange={selectedRange} />}
+        {statsData?.overall_xp && <WeeklyXPChart data={statsData.overall_xp} selectedRange={selectedRange} />}
       </View>
     </ViewScreen>
   );

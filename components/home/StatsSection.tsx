@@ -1,7 +1,9 @@
 import StatCard from '@/components/stats/StatCard';
 import { View } from '@/components/Themed';
 import { StyleSheet } from 'react-native';
+// @ts-ignore
 import clock from '@/assets/icons/clock.png';
+// @ts-ignore
 import lineGraph from '@/assets/icons/line-graph.png';
 
 export function StatsSection({ totalTime, totalXp }: { totalTime: string, totalXp: string }) {
