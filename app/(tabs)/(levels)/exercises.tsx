@@ -72,7 +72,7 @@ export default function ExercisesScreen() {
           blackBackground
           image={video.banner_url}
           title={video.title}
-          description={`Discover this exercise of ${video.title} of level now !`}
+          description={video.description}
           isCompleted={video.isCompleted}
           exerciseData={{
             id: video.id,

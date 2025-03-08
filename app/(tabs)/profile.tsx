@@ -129,7 +129,7 @@ export default function ProfileScreen() {
               key={activity.id}
               image={activity.banner_url}
               title={activity.title}
-              description={`Discover this exercise ${activity.title} now !`}
+              description={activity.description}
               exerciseData={activity}
             />
           ))}
