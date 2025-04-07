@@ -12,6 +12,7 @@ import { Text, View } from '@/components/Themed';
 import { ActivityIndicator, Image } from 'react-native';
 import { AuthContext, AuthProvider } from '@/context/AuthProvider';
 import * as SecureStore from "expo-secure-store";
+import { useVersionCheck } from '@/hooks/useVersionCheck';
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -130,6 +131,26 @@ export default function RootLayout() {
     'Montserrat-ThinItalic': require('../assets/fonts/Montserrat-ThinItalic.ttf'),
     ...FontAwesome.font,
   });
+
+  const { checkVersion, showUpdateDialog, needsUpdate, isForceUpdate } = useVersionCheck();
+
+  useEffect(() => {
+    checkVersion();
+  }, []);
+
+  useEffect(() => {
+    if (needsUpdate) {
+      showUpdateDialog();
+    }
+  }, [needsUpdate]);
+
+  // if (isForceUpdate && needsUpdate) {
+  //   return (
+  //     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+  //       <Text>Une mise à jour est nécessaire pour continuer</Text>
+  //     </View>
+  //   );
+  // }
 
   return (
     <AuthProvider>
