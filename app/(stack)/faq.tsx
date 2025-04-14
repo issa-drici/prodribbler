@@ -10,9 +10,6 @@ const ContactSupport = () => {
     return (
         <View style={styles.supportContainer}>
             <Text style={styles.supportTitle}>Contact Support</Text>
-            {/* <Text style={styles.supportDescription}>
-                Lorem ipsum dolor sit amet consectetur. Quam laoreet ornare massa ut sed sed ut nisl. Etiam facilisi morbi laoreet parturient ultricies. Pellentesque tincidunt placerat lacus tellus purus.
-            </Text> */}
 
             <View style={styles.issueContainer}>
                 <Text style={styles.issueTitle}>What issue are you experiencing?</Text>

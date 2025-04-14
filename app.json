@@ -15,7 +15,11 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.alliancetech.prodribbler"
+      "bundleIdentifier": "com.alliancetech.prodribbler",
+      "infoPlist": {
+        "NSCameraUsageDescription": "We need access to your camera so you can take photos to personalize your player card in the football training app. Your photos will only be used within the app.",
+        "NSPhotoLibraryUsageDescription": "We need access to your photo library so you can select photos to customize your player card in the football training app. Your photos will only be used within the app."
+      }
     },
     "android": {
       "adaptiveIcon": {

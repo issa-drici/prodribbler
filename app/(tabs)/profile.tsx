@@ -123,9 +123,9 @@ export default function ProfileScreen() {
       {profileData?.favorites?.length > 0 && (
         <View style={styles.container}>
           <GradientText style={styles.headerTitle} colors={['#fff', '#38A8E0']}>Recent Favorites</GradientText>
-          <Text style={styles.headerDescription}>
+          {/* <Text style={styles.headerDescription}>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod.
-          </Text>
+          </Text> */}
 
           {profileData?.favorites?.map((activity: any) => (
             <ActivityCard

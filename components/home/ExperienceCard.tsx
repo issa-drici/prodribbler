@@ -28,7 +28,7 @@ export function ExperienceCard({ totalXp }: { totalXp: string }) {
         </GradientText>
 
         <Text style={styles.subtitle}>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod.
+          Every session counts. Stay consistent, earn XP, and unlock new skills. Your progress is your power.
         </Text>
 
         <View style={styles.progressContainer}>

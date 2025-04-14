@@ -8,7 +8,7 @@ export function RecentActivities({ activities }: { activities: any }) {
     <View style={styles.container}>
       <GradientText style={styles.headerTitle}>Recent Activities</GradientText>
       <Text style={styles.headerDescription}>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod.
+        Keep track of your latest training sessions, drills completed, and milestones hit — all in one place.
       </Text>
 
       {activities?.map((activity: any) => (

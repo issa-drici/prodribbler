@@ -27,20 +27,7 @@ export default function TrainingStatsHeader({ selectedRange, setSelectedRange }:
                 ))}
             </View>
             <Link href={{
-                pathname: '/(tabs)/(stats-ranking)/rankings',
-                params: {
-                    data: JSON.stringify({
-                        category: 'Dribbling Drill',
-                        name: 'Kids Soccer Agility Drills',
-                        duration: '3h45m',
-                        level: 'Intermediate',
-                        completed: true,
-                        link: 'https://videos.pexels.com/video-files/8938122/8938122-uhd_2560_1440_25fps.mp4',
-                        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod.',
-                        instructions: ['Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod.', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod.', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.Sed do eiusmod.', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.Sed do eiusmod.']
-
-                    }),
-                },
+                pathname: '/(tabs)/(stats-ranking)/rankings'
             }} asChild style={styles.linkContainer}>
                 <GradientButton
                     text="Pro Dribbler Rankings"

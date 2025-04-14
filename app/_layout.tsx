@@ -11,6 +11,7 @@ import { HeaderProvider } from '@/context/HeaderContext';
 import { Text, View } from '@/components/Themed';
 import { ActivityIndicator, Image } from 'react-native';
 import { AuthContext, AuthProvider } from '@/context/AuthProvider';
+import { PermissionsProvider, usePermissions } from '@/context/PermissionsProvider';
 import * as SecureStore from "expo-secure-store";
 import { useVersionCheck } from '@/hooks/useVersionCheck';
 
@@ -25,7 +26,7 @@ export {
 // };
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
-// SplashScreen.preventAutoHideAsync();
+SplashScreen.preventAutoHideAsync();
 
 function AuthStackNavigator() {
   return (
@@ -60,50 +61,83 @@ function HomeStackNavigator() {
   );
 }
 
+function PermissionsStackNavigator() {
+  return (
+    <Stack
+      screenOptions={{
+        headerShown: false,
+        gestureEnabled: false,
+        animation: 'none',
+      }}
+    >
+      <Stack.Screen name="permissions" options={{ headerShown: false }} />
+    </Stack>
+  );
+}
+
 function RootLayoutNav() {
   const [isLoading, setIsLoading] = useState(true);
+  const [isInitialized, setIsInitialized] = useState(false);
   const { user, setUser } = useContext(AuthContext);
+  const { permissionsGranted, cameraPermission, libraryPermission } = usePermissions();
   const segments = useSegments();
   const router = useRouter();
 
+  // Effet pour l'initialisation de l'utilisateur
   useEffect(() => {
+    const initializeUser = async () => {
+      try {
+        const userData = await SecureStore.getItemAsync("user");
+        if (userData) {
+          setUser(JSON.parse(userData));
+        }
+        setIsInitialized(true);
+      } catch (error) {
+        console.error('Erreur lors de l\'initialisation de l\'utilisateur:', error);
+        setIsInitialized(true);
+      }
+    };
+
+    initializeUser();
+  }, []); // Dépendances vides car on ne veut l'exécuter qu'une fois
+
+  // Effet pour la navigation
+  useEffect(() => {
+    if (!isInitialized || cameraPermission === null || libraryPermission === null) {
+      return;
+    }
+
     const inAuthGroup = segments[0] === '(auth)';
     const isSignupScreen = segments[1] === 'signup';
+    const isPermissionsScreen = segments[0] === 'permissions';
 
-    if (!isLoading) {
-      if (!user && !isSignupScreen) {
-        router.replace('/(auth)/login');
-      } else if (user && inAuthGroup) {
-        router.replace('/(tabs)');
-      }
+    if (!permissionsGranted && !isPermissionsScreen) {
+      router.replace('/permissions');
+    } else if (!user && !isSignupScreen && permissionsGranted) {
+      router.replace('/(auth)/login');
+    } else if (user && inAuthGroup && permissionsGranted) {
+      router.replace('/(tabs)');
     }
-  }, [user, segments, isLoading]);
 
-  useEffect(() => {
-    SecureStore.getItemAsync("user").then((user) => {
-      if (user) {
-        setUser(JSON.parse(user));
-      }
-      setIsLoading(false);
-    }).catch((error) => {
-      console.error(error);
-      setIsLoading(false);
-    });
-  }, []);
+    setIsLoading(false);
+    SplashScreen.hideAsync();
+  }, [isInitialized, user, segments, permissionsGranted, cameraPermission, libraryPermission]);
 
   if (isLoading) {
-    return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <ActivityIndicator size="large" color="#0000ff" />
-      </View>
-    );
+    return null; // Le splash screen sera affiché pendant le chargement
   }
 
   return (
     <HeaderProvider>
       <ThemeProvider value={DefaultTheme}>
         <StatusBar style="light" />
-        {user ? <HomeStackNavigator /> : <AuthStackNavigator />}
+        {!permissionsGranted ? (
+          <PermissionsStackNavigator />
+        ) : user ? (
+          <HomeStackNavigator />
+        ) : (
+          <AuthStackNavigator />
+        )}
       </ThemeProvider>
     </HeaderProvider>
   );
@@ -154,7 +188,9 @@ export default function RootLayout() {
 
   return (
     <AuthProvider>
-      <RootLayoutNav />
+      <PermissionsProvider>
+        <RootLayoutNav />
+      </PermissionsProvider>
     </AuthProvider>
   );
 }
