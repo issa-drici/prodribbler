@@ -20,7 +20,7 @@ export default function SettingsScreen() {
                     <View style={styles.inputContainer}>
                         <TextInput
                             style={styles.input}
-                            placeholder="E.g. debbie.baker@example.com"
+                            placeholder="Enter your email address"
                             placeholderTextColor="rgba(255, 255, 255, 0.6)"
                             value={currentEmail}
                             onChangeText={setCurrentEmail}
@@ -32,7 +32,7 @@ export default function SettingsScreen() {
                     <View style={styles.inputContainer}>
                         <TextInput
                             style={styles.input}
-                            placeholder="E.g. debbie.baker@example.com"
+                            placeholder="Enter your new email address"
                             placeholderTextColor="rgba(255, 255, 255, 0.6)"
                             value={newEmail}
                             onChangeText={setNewEmail}

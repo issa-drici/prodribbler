@@ -1,4 +1,4 @@
-package com.prodribbler
+package com.alliancetech.prodribbler
 
 import android.app.Application
 import android.content.res.Configuration

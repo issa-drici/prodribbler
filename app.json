@@ -17,8 +17,8 @@
       "supportsTablet": true,
       "bundleIdentifier": "com.alliancetech.prodribbler",
       "infoPlist": {
-        "NSCameraUsageDescription": "We need access to your camera so you can take photos to personalize your player card in the football training app. Your photos will only be used within the app.",
-        "NSPhotoLibraryUsageDescription": "We need access to your photo library so you can select photos to customize your player card in the football training app. Your photos will only be used within the app."
+        "NSCameraUsageDescription": "We need access to your camera to let you take profile pictures for your football training profile. This allows you to personalize your player card and share your progress with the community. Your photos are stored securely and only used within the app.",
+        "NSPhotoLibraryUsageDescription": "We need access to your photo library to let you choose profile pictures for your football training profile. This helps you personalize your player card and track your training journey. Your photos are stored securely and only used within the app.",
       }
     },
     "android": {

@@ -21,7 +21,7 @@ export default function ProfileScreen() {
   const { user: userAuth } = useContext(AuthContext);
   const [profileData, setProfileData] = useState<any>(null);
   // const [goals, setGoals] = useState("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod.");
-  const [goals, setGoals] = useState<string>('');
+  const [goals, setGoals] = useState<string>('Set your progression goals to track your development in football training.');
   const [modalVisible, setModalVisible] = useState(false);
   const [tempGoals, setTempGoals] = useState<string>('');
 
@@ -123,9 +123,9 @@ export default function ProfileScreen() {
       {profileData?.favorites?.length > 0 && (
         <View style={styles.container}>
           <GradientText style={styles.headerTitle} colors={['#fff', '#38A8E0']}>Recent Favorites</GradientText>
-          {/* <Text style={styles.headerDescription}>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod.
-          </Text> */}
+          <Text style={styles.headerDescription}>
+            Your most recently saved training exercises and drills for quick access.
+          </Text>
 
           {profileData?.favorites?.map((activity: any) => (
             <ActivityCard
